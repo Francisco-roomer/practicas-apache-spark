@@ -1,0 +1,5 @@
+Dataset: Flight Delays and Cancellations (2015)
+Fuente: Kaggle
+URL de descarga: https://www.kaggle.com/datasets/usdot/flight-delays
+
+Instrucciones: Descargar el archivo 'flights.csv', convertirlo a formato Parquet como 'vuelos.parquet' o renombrarlo según los requerimientos del notebook para ejecutar el pipeline localmente.
