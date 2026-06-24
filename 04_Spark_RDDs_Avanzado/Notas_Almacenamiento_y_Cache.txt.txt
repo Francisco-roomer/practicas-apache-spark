@@ -1,0 +1,42 @@
+# Almacenamiento en Memoria con Apache Spark
+
+En esta lección aprenderemos a manejar el almacenamiento en la memoria de Spark.
+
+El almacenamiento en caché permite que Spark conserve los datos a lo largo de las distintas operaciones y cálculos. De hecho, esta es una de las técnicas más importantes de Spark para acelerar el procesamiento, especialmente cuando se trabaja con **cálculos iterativos**.
+
+El almacenamiento en caché funciona guardando las particiones del RDD en la memoria tanto como sea posible. 
+
+> ⚠️ **Nota sobre el rendimiento:** Si los datos que se solicitan almacenar en caché son más grandes que la memoria disponible, el rendimiento disminuirá porque Spark comenzará a utilizar el disco en lugar de la memoria ram.
+
+Podemos marcar un RDD para ser guardado en almacenamiento persistente usando los métodos `cache()` o `persist()`:
+
+* **`cache()`**: Es simplemente un sinónimo o acceso directo de `persist()` que utiliza por defecto el nivel de almacenamiento `MEMORY_ONLY`.
+* **`persist()`**: Es más flexible, ya que permite definir si los datos se guardarán en memoria, en disco o en una combinación de ambos.
+
+---
+
+## Niveles de Almacenamiento en Spark
+
+A continuación se presentan los valores posibles para configurar el nivel de almacenamiento (Storage Level):
+
+### 1. `MEMORY_ONLY`
+Almacena el RDD como objetos Java deserializados en la Máquina Virtual de Java (JVM). Si el RDD no cabe por completo en la memoria, las particiones restantes no se guardarán en caché y se **volverán a calcular sobre la marcha** cada vez que se necesiten. *Este es el nivel por defecto.*
+
+### 2. `MEMORY_AND_DISK`
+Almacena el RDD como objetos Java deserializados en la JVM. Si el RDD no cabe en la memoria, almacena las particiones sobrantes en el **disco** y las lee desde allí cuando sea necesario.
+
+### 3. `DISK_ONLY`
+Almacena las particiones del RDD **únicamente en el disco**.
+
+### 4. `MEMORY_ONLY_2`, `MEMORY_AND_DISK_2`, etc.
+Funcionan exactamente igual que los niveles anteriores, pero con la diferencia de que **replican cada partición en dos nodos del clúster** para brindar mayor tolerancia a fallos.
+
+
+
+Recomendaciones
+
+Si los RDD caben en la memoria use, DISK_ONLY ya que es la opción mas rápida para el rendimiento de la ejecución.
+
+DISK_ONLY : No debe usarse a menos que sus cálculos seas costosos 
+
+-- Utilice almacenamiento replicado para una mejor tolerancia a fallas si puede ahorrar la memoria adicional necesaria. Esto evitará que se vuelvan a calcular las particiones perdidas para obtener la mejor disponibilidad
