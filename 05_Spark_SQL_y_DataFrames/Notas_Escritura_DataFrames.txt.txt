@@ -1,0 +1,79 @@
+# Escritura y Almacenamiento de DataFrames
+
+Hasta este punto, hemos aprendido a leer datos en diferentes formatos y a realizar transformaciones y acciones para manipularlos. El paso final en cualquier pipeline de **ETL (Extracción, Transformación y Carga)** consiste en escribir y almacenar de forma persistente nuestros DataFrames en un sistema de almacenamiento externo, ya sea el sistema de archivos local, **HDFS** o servicios en la nube como **Amazon S3**.
+
+En Spark SQL, la clase **`DataFrameWriter`** es la responsable única de gestionar la lógica para guardar estos datos. Una instancia de esta clase está disponible en cualquier DataFrame a través de la propiedad **`df.write`**.
+
+---
+
+## El Patrón Común de Escritura
+
+El patrón estándar para interactuar con `DataFrameWriter` sigue una estructura jerárquica muy similar a la de lectura:
+
+```python
+df.write.format(...) \
+        .mode(...) \
+        .option("key", "value") \
+        .partitionBy(...) \
+        .bucketBy(...) \
+        .sortBy(...) \
+        .save(path)
+
++
+
+Aquí tienes el texto completamente corregido, pulido técnicamente y estructurado en Markdown para tu cuaderno de Jupyter:
+
+```markdown
+# Escritura y Almacenamiento de DataFrames
+
+Hasta este punto, hemos aprendido a leer datos en diferentes formatos y a realizar transformaciones y acciones para manipularlos. El paso final en cualquier pipeline de **ETL (Extracción, Transformación y Carga)** consiste en escribir y almacenar de forma persistente nuestros DataFrames en un sistema de almacenamiento externo, ya sea el sistema de archivos local, **HDFS** o servicios en la nube como **Amazon S3**.
+
+En Spark SQL, la clase **`DataFrameWriter`** es la responsable única de gestionar la lógica para guardar estos datos. Una instancia de esta clase está disponible en cualquier DataFrame a través de la propiedad **`df.write`**.
+
+---
+
+## El Patrón Común de Escritura
+
+El patrón estándar para interactuar con `DataFrameWriter` sigue una estructura jerárquica muy similar a la de lectura:
+
+```python
+df.write.format(...) \
+        .mode(...) \
+        .option("key", "value") \
+        .partitionBy(...) \
+        .bucketBy(...) \
+        .sortBy(...) \
+        .save(path)
+
+```
+
+> 💡 **Formato por defecto:** Al igual que ocurre con la lectura, el formato predeterminado de escritura en Spark es **Parquet**. Por lo tanto, si omites el método `.format()`, Spark guardará los datos automáticamente en este formato binario optimizado.
+
+---
+
+## Control de la Estructura de Directorios
+
+Los métodos `partitionBy()`, `bucketBy()` y `sortBy()` se utilizan específicamente para optimizar cómo se organizan físicamente los archivos dentro del directorio de salida (principalmente en fuentes basadas en archivos como Parquet, ORC o CSV):
+
+* **`partitionBy()`**: Divide los datos en carpetas separadas basadas en los valores de una o más columnas (ej. `año=2026/mes=06/`).
+* **`bucketBy()`**: Distribuye los datos en un número fijo de archivos (*buckets*) utilizando un hash de las columnas especificadas.
+* **`sortBy()`**: Ordena internamente los datos dentro de cada partición o *bucket* para acelerar futuras consultas de filtrado.
+
+---
+
+## Modos de Guardado (*Save Modes*)
+
+Una de las configuraciones más críticas en `DataFrameWriter` es el **modo de guardado** (`.mode()`). Este parámetro le indica a Spark exactamente qué hacer en caso de que la carpeta o ruta de destino especificada **ya exista**.
+
+A continuación, se describen los cuatro modos de guardado admitidos:
+
+| Modo | Nombre técnico | Descripción |
+| --- | --- | --- |
+| **`append`** | `SaveMode.Append` | **Añade** los datos del DataFrame a la lista de archivos que ya existen en la ubicación de destino. No borra nada. |
+| **`overwrite`** | `SaveMode.Overwrite` | **Sobrescribe** por completo cualquier archivo o directorio existente en la ubicación de destino con los nuevos datos del DataFrame. |
+| **`error`** o **`errorifexists`** | `SaveMode.ErrorIfExists` | *Este es el modo por defecto.* Si la ubicación de destino ya existe, Spark detendrá el proceso de inmediato y **arrojará una excepción/error**. |
+| **`ignore`** | `SaveMode.Ignore` | Si la ubicación de destino ya existe, Spark **no hará nada** (no guarda los datos del DataFrame, pero tampoco arroja ningún error). |
+
+```
+
+```
