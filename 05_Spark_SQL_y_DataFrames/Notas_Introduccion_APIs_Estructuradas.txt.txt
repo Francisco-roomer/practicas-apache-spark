@@ -1,0 +1,58 @@
+# Introducción a las APIs Estructuradas en Apache Spark
+
+En Spark 1.6 se introdujo una nueva abstracción de programación conocida como las **APIs Estructuradas**. Esta se ha convertido en la forma preferida para realizar el procesamiento de datos en la gran mayoría de los casos de uso. 
+
+En este enfoque, los datos deben organizarse en un formato estructurado y la lógica de cálculo debe seguir una estructura bien definida. Al contar con esta información, Spark puede aplicar optimizaciones automáticas bajo el capó para acelerar significativamente la ejecución de las aplicaciones.
+
+---
+
+## Arquitectura de las APIs Estructuradas
+
+A nivel de arquitectura, las APIs estructuradas se construyen encima del motor básico de Spark, distribuyéndose de la siguiente manera:
+
+```text
++-------------------------------------------------------+
+|          Spark Shell  /  Aplicaciones de Spark        |
++-------------------------------------------------------+
+|   Spark SQL  |  DataFrame API  |  Dataset API (Java/Scala) |
++-------------------------------------------------------+
+|                  Catalyst Optimizer                   |
++-------------------------------------------------------+
+|                      SPARK CORE                       |
++-------------------------------------------------------+
+
+```
+
+---
+
+## ¿Qué es un DataFrame?
+
+El concepto de **DataFrame** se inspiró en los clásicos DataFrames de la librería Pandas de Python. La principal diferencia es que, en Apache Spark, un DataFrame está diseñado para manejar volúmenes masivos de datos distribuidos a lo largo de múltiples máquinas en un clúster.
+
+### La importancia del Esquema (*Schema*)
+
+El elemento principal que diferencia a los datos estructurados de los no estructurados es el **Esquema**. Un esquema define la estructura de los datos mediante:
+
+* Los nombres de las columnas.
+* Los tipos de datos asociados a cada columna (enteros, cadenas, fechas, etc.).
+
+El esquema es una parte integral y obligatoria de las APIs estructuradas de Spark para poder optimizar las consultas antes de ejecutarlas.
+
+---
+
+## Formatos de Datos Soportados
+
+Los datos estructurados se almacenan habitualmente en formatos específicos, los cuales se dividen en dos grandes categorías:
+
+| Tipo de Formato | Formatos Comunes | Características |
+| --- | --- | --- |
+| **Basados en Texto** | CSV, JSON, XML | Son legibles por humanos, pero suelen ser más pesados y lentos de procesar. |
+| **Basados en Binario** | Parquet, Avro, ORC | Altamente optimizados, soportan compresión nativa y almacenamiento columnar (en el caso de Parquet y ORC). |
+
+El módulo **Spark SQL** facilita enormemente la lectura y escritura de datos desde y hacia cualquiera de estos formatos.
+
+> 💡 **Beneficio extra:** Debido a esta versatilidad para leer un formato y escribir en otro de forma nativa, Spark se utiliza muchísimo como una potente herramienta de **conversión y transformación de formatos de datos** en tuberías de datos (ETL).
+
+```
+
+```
