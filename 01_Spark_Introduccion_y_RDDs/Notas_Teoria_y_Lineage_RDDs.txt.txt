@@ -1,0 +1,22 @@
+
+## ¿Qué es un RDD y cuáles son sus características principales?
+
+Un **Resilient Distributed Dataset (RDD)** (Conjunto de Datos Distribuido y Resiliente) es la abstracción de datos fundamental de Apache Spark.
+
+Los RDD son colecciones de elementos particionados a lo largo de los nodos de un clúster, las cuales se pueden operar de manera paralela e independiente.
+
+---
+
+### Características clave de los RDD
+
+* **Dependencias (Lineage / Linaje):** Es un registro o lista que le indica a Spark cómo se construyó un RDD a partir de sus fuentes originales o de transformaciones previas. Si un nodo falla y se pierde una partición, Spark utiliza este linaje para reconstruir el RDD exactamente desde el punto del fallo, replicando las operaciones necesarias. Esta característica es la que les otorga su **resiliencia**.
+
+* **Particiones:** Son las divisiones lógicas de los datos. Brindan a Spark la capacidad de fragmentar el volumen total de información para paralelizar los cálculos de forma eficiente entre los distintos ejecutores del clúster.
+
+* **Función de cálculo:** Es la operación matemática o lógica que produce un iterador para procesar los datos que están almacenados en el RDD.
+
+---
+
+### Ejemplo de un RDD con 3 particiones usando HDFS
+
+Como se puede observar en la arquitectura de Spark, cuando se trabaja sobre un sistema de archivos distribuido como **HDFS**, cada partición lógica del RDD suele corresponderse directamente con la ubicación física de un bloque de datos en los distintos nodos del clúster. Esto permite que Spark aplique el principio de "localidad de datos", ejecutando el código allí donde la información ya está físicamente guardada.

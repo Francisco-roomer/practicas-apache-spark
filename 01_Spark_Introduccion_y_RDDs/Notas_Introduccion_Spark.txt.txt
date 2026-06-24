@@ -1,0 +1,91 @@
+---
+
+## Introducción a Apache Spark
+
+Spark es un **sistema distribuido unificado** diseñado para procesar grandes volúmenes de datos de manera eficiente y rápida. Para interactuar con sistemas de almacenamiento y gestión de recursos, utiliza las bibliotecas cliente de Hadoop para **HDFS** y **YARN**.
+
+Es altamente versátil: se ejecuta tanto en sistemas **Windows** como **Unix** (incluyendo **Linux** y **macOS**), y en cualquier plataforma que cuente con una versión compatible de **Java**.
+
+---
+
+## Velocidad y eficiencia
+
+* **Ampliación del modelo MapReduce:** Spark evoluciona el popular modelo MapReduce para admitir de manera eficiente más tipos de cálculos, incluyendo consultas interactivas y procesamiento en flujo (*streaming*).
+* **Cálculos en memoria:** Una de sus principales características es la capacidad de ejecutar cálculos directamente en la memoria RAM. Además, el sistema es notablemente más eficiente que MapReduce al ejecutar aplicaciones complejas en disco.
+* **Versatilidad de cargas de trabajo:** Está diseñado para cubrir una amplia gama de tareas que anteriormente requerían sistemas distribuidos separados, tales como aplicaciones en lote (*batch*), algoritmos interactivos, consultas iterativas y *streaming*.
+* **Combinación de procesos:** Al unificar estas cargas de trabajo en un mismo motor, Spark hace que sea fácil y económico combinar diferentes tipos de procesamiento, algo fundamental en el análisis de datos predictivos.
+
+---
+
+## Accesibilidad e integración
+
+Spark está diseñado para ser altamente accesible, ofreciendo **APIs simples** en los siguientes lenguajes:
+
+* Python
+* Java
+* Scala
+* R
+* SQL
+
+Además, se integra estrechamente con otras herramientas de Big Data; puede ejecutarse de forma nativa en clústeres de Hadoop y acceder a cualquier fuente de datos compatible con este ecosistema.
+
+---
+
+## Arquitectura de Spark 4.0
+
+### Spark Connect
+
+Es una arquitectura cliente-servidor (introducida en Spark 3.4 y completamente madura en **Spark 4.0**) que desacopla las aplicaciones cliente del clúster de Spark, permitiendo una conectividad remota eficiente.
+
+* **Cliente ligero:** Reduce drásticamente el peso del entorno del cliente (apenas **1.5 MB** comparado con los **355 MB** que requería PySpark completo anteriormente).
+* **Conectividad remota:** Permite ejecutar aplicaciones desde cualquier dispositivo o IDE de desarrollo local.
+* **Soporte multilenguaje:** Cuenta con clientes nativos para lenguajes como **Go, Swift y Rust**.
+* **Comunicación eficiente:** Utiliza **gRPC** y **Apache Arrow** para garantizar transferencias de datos de alto rendimiento.
+
+---
+
+## Componentes del clúster
+
+Las aplicaciones de Spark se ejecutan como conjuntos independientes de procesos en un clúster, coordinados por un objeto llamado `SparkContext` dentro del programa principal, comúnmente denominado **Driver**.
+
+### Componentes principales:
+
+* **Driver Program:** Es el proceso que ejecuta la función `main()` de la aplicación y se encarga de crear el `SparkContext`.
+* **Cluster Manager:** Servicio externo encargado de administrar y adquirir recursos para el clúster (como **Standalone**, **YARN** o **Kubernetes**).
+* **Executors:** Procesos alojados en los nodos trabajadores (*Worker Nodes*) que ejecutan las tareas individuales y almacenan datos en memoria o disco.
+* **Worker Nodes:** Los nodos físicos o virtuales del clúster que tienen la capacidad de ejecutar el código de la aplicación.
+
+---
+
+## Ecosistema y módulos de Spark 4.0
+
+### Spark Core
+
+Contiene la funcionalidad básica del sistema: programación de tareas (*scheduling*), administración de memoria, recuperación de fallas e interacción con sistemas de almacenamiento. Alberga la API que define los **RDD** (*Resilient Distributed Datasets*), la abstracción de datos fundamental de Spark.
+
+#### Novedades en Spark 4.0 (Spark Core):
+
+* **Modo ANSI por defecto:** Se habilita el modo ANSI SQL de manera predeterminada, alineando a Spark estrechamente con los estándares oficiales de SQL.
+* **Mejor manejo de errores:** Proporciona mensajes de error explícitos para operaciones que anteriormente resultaban en truncamientos silenciosos o valores nulos (`NULL`).
+* **Compatibilidad mejorada:** Facilita considerablemente la migración de cargas de trabajo SQL provenientes de otros sistemas de bases de datos.
+
+### Spark SQL
+
+Es el módulo dedicado al trabajo con datos estructurados. Permite a los desarrolladores mezclar consultas SQL tradicionales con la manipulación programática de datos en Python, R, Java y Scala dentro de una misma aplicación.
+
+### Structured Streaming (Spark Streaming)
+
+Componente optimizado que permite el procesamiento y análisis de flujos de datos en tiempo real de manera escalable y tolerante a fallas.
+
+### MLlib (Machine Learning Library)
+
+Biblioteca nativa que proporciona algoritmos de aprendizaje automático listos para usar (clasificación, regresión, *clustering* y filtrado colaborativo), además de herramientas de apoyo para la evaluación de modelos y la importación de datos.
+
+### Administradores de clústeres
+
+Spark está diseñado para escalar eficientemente desde uno hasta miles de nodos de cómputo. Para maximizar esta flexibilidad, puede ejecutarse sobre diversos gestores de recursos como **Hadoop YARN**, **Kubernetes** o su propio gestor integrado, el **Standalone Scheduler**.
+
+---
+
+Por último, el diagrama de arquitectura anterior muestra de manera general cómo están estructurados y cómo interactúan estos componentes dentro del ecosistema de Spark.
+    
