@@ -1,0 +1,38 @@
+Inmutabilidad y operaciones en RDDs
+Los RDDs son inmutables, lo que significa que no pueden ser modificados una vez creados; cualquier operación sobre ellos genera un nuevo RDD. Las dos operaciones principales que se pueden realizar son las Transformaciones y las Acciones.
+
+Transformaciones
+Las transformaciones modifican o filtran los elementos del RDD original (por ejemplo, transformar tipos de datos, filtrar registros o realizar cálculos). Se pueden encadenar múltiples transformaciones en secuencia, sin embargo, Spark no las ejecuta de inmediato. En su lugar, las agrega a un DAG (Directed Acyclic Graph o Grafo Acíclico Dirigido).
+
+Este comportamiento se conoce como Evaluación Perezosa (Lazy Evaluation): las transformaciones solo se calculan cuando una acción solicita formalmente los datos al programa principal (Driver).
+
+Acciones
+Las acciones son operaciones que instruyen a Spark para ejecutar todo el plan de transformaciones acumulado en el DAG hasta ese punto, con el fin de devolver un resultado final o guardar los datos en un sistema de almacenamiento.
+
+Ejemplo práctico en PySpark
+A continuación, se muestra cómo se aplican estos conceptos en código, aplicando la lógica de transformación a cada uno de los elementos de manera distribuida:
+
+
+# 1. RDD ORIGINAL
+rdd = sc.parallelize(["azul", "azul", "verde", "rojo", "rojo", "verde", "negro"])
+
+# 2. FILTRAR LOS AZULES
+# Esto es una transformación. Genera un nuevo RDD en el DAG, pero no se ejecuta aún.
+sin_azul_rdd = rdd.filter(lambda x: x != "azul")
+
+# 3. FILTRAR LOS ROJOS
+# Otra transformación que genera un RDD independiente en el flujo.
+sin_rojos_rdd = rdd.filter(lambda x: x != "rojo")
+
+# 4. MOSTRAR EL NÚMERO DE REGISTROS
+# .count() es una ACCIÓN. En este momento se dispara la ejecución del DAG,
+# se procesan los filtros previos y se envía el resultado numérico al Driver.
+sin_rojos_rdd.count()
+
+# 5. FILTRAR SOLO LOS NEGROS
+# Nueva transformación basada en el RDD original.
+solo_negro_rdd = rdd.filter(lambda x: x == "negro")
+
+# 6. MOSTRAR EL NÚMERO DE REGISTROS
+# Otra ACCIÓN que desencadena el linaje del DAG necesario para resolver este RDD específico.
+solo_negro_rdd.count()

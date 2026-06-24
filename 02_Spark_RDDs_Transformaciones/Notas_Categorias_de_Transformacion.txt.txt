@@ -1,0 +1,26 @@
+Aquí tienes el texto completamente corregido, con una redacción técnica más pulida, sin errores ortográficos y con los nombres de los métodos de Spark escritos en su formato correcto (camelCase):
+
+Categorías de transformaciones en RDDs
+Las transformaciones en Spark se pueden dividir en cuatro categorías principales, dependiendo de su propósito y de cómo manipulan los datos:
+
+1. Transformaciones generales
+Son funciones de propósito general que cubren la mayoría de los casos de uso habituales. Aplican una lógica de transformación sobre los elementos de un RDD existente y generan un nuevo RDD. Las operaciones comunes de filtrado, mapeo y ordenamiento pertenecen a este grupo.
+
+Ejemplos: map(), filter(), flatMap(), groupByKey(), sortByKey(), combineByKey().
+
+2. Transformaciones matemáticas o estadísticas
+Son funciones diseñadas para aplicar operaciones matemáticas o manejar lógica estadística sobre los RDDs, generando un nuevo RDD estructurado. El muestreo de datos es uno de los mejores ejemplos y se utiliza con frecuencia en flujos de analítica predictiva.
+
+Ejemplos: sampleByKey(), randomSplit().
+
+3. Transformaciones de conjuntos o relacionales
+Estas funciones manejan operaciones algebraicas relacionales o de teoría de conjuntos (como uniones o agrupaciones complejas entre diferentes fuentes de datos). Actúan combinando o comparando RDDs existentes para generar un nuevo RDD resultante.
+
+Ejemplos: cogroup(), join(), subtractByKey(), fullOuterJoin(), leftOuterJoin(), rightOuterJoin().
+
+4. Transformaciones basadas en estructuras de datos
+Operan directamente sobre la arquitectura física y el almacenamiento subyacente del RDD, específicamente sobre sus particiones. Estas funciones permiten modificar la distribución de los datos a lo largo del clúster sin necesidad de alterar o procesar el contenido de cada registro de forma individual. Son fundamentales para optimizar el rendimiento del sistema, redistribuyendo la carga según el tamaño de los datos y la capacidad del clúster.
+
+Ejemplos: partitionBy(), repartition(), zipWithIndex(), coalesce().
+
+
